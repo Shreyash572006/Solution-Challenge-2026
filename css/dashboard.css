@@ -715,3 +715,38 @@ tr:hover {
 .msg-replay-btn:hover {
     opacity: 1;
 }
+
+/* ─── Inventory Prediction Cards ─────────────────────────────── */
+.inv-pred-card {
+    padding: 1.25rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.inv-pred-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.inv-pred-suggestion {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    padding: 0.5rem 0.75rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 0.5rem;
+    border-left: 3px solid #8B5CF6;
+    margin-top: 0.5rem;
+}
+
+/* ─── Alert Dropdown ─────────────────────────────────────────── */
+.alert-item:hover { background: rgba(255,255,255,0.04); }
+.alert-item.unread { border-left: 2px solid rgba(139,92,246,0.5); }
+
+/* ─── Smart Pricing ──────────────────────────────────────────── */
+#aiPricingResults > div { animation: fadeIn 0.3s ease; }
+
+/* ─── Health Score ───────────────────────────────────────────── */
+#healthScoreMini { transition: all 0.2s; }
+#healthScoreMini:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.3); }

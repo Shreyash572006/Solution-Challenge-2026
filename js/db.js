@@ -13,7 +13,8 @@ const DB = {
         const defaultData = {
             salesLog: [],
             inventory: [],
-            expenses: []
+            expenses: [],
+            decisions: []
         };
         localStorage.setItem(`viq_data_${userId}`, JSON.stringify(defaultData));
     },
@@ -23,7 +24,7 @@ const DB = {
         const user = Auth.getCurrentUser();
         if (!user) return null;
         const data = localStorage.getItem(`viq_data_${user.id}`);
-        return data ? JSON.parse(data) : { salesLog: [], inventory: [], expenses: [] };
+        return data ? JSON.parse(data) : { salesLog: [], inventory: [], expenses: [], decisions: [] };
     },
 
     // Save all user data
@@ -131,6 +132,34 @@ const DB = {
     deleteExpense(expenseId) {
         const data = this.getAllData();
         data.expenses = data.expenses.filter(e => e.id !== expenseId);
+        this.saveAllData(data);
+    },
+
+    // --- Decisions Engine ---
+    getDecisions() {
+        return this.getAllData().decisions || [];
+    },
+
+    addDecision(problem, reason, suggestion) {
+        const data = this.getAllData();
+        const user = Auth.getCurrentUser();
+        if (!data.decisions) data.decisions = [];
+        const newDec = {
+            id: 'dec_' + Date.now(),
+            userId: user.id,
+            problem,
+            reason,
+            suggestion,
+            timestamp: new Date().toISOString()
+        };
+        data.decisions.push(newDec);
+        this.saveAllData(data);
+        return newDec;
+    },
+    
+    clearDecisions() {
+        const data = this.getAllData();
+        data.decisions = [];
         this.saveAllData(data);
     },
 

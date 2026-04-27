@@ -32,14 +32,39 @@ const Dashboard = {
         this.setupAIChat();
         this.refreshAllData();
 
-        // Init all helper modules
+        // Init all modules
         BusinessAdvisor.init();
+        DecisionEngine.init();
+        AlertSystem.init();
+        HealthScore.init();
+        InventoryPredictor.init();
+        SmartPricing.init();
+        SmartReports.init();
         Marketing.init();
         PricingModule.init();
         Competitor.init();
         ReviewsModule.init();
+        // New modules
+        Udhaar.init();
+        BillingSystem.init();
+        CashFlow.init();
+        GoalSystem.init();
+        CustomerInsights.init();
+        DemandForecast.init();
+        MiniEcommerce.init();
+        OfferGenerator.init();
+        StaffManager.init();
+        SupplierManager.init();
+        PeakSales.init();
+        MarketTrends.init();
+        MultiShop.init();
+        VoiceEntry.init();
+        OfflineMode.init();
+        // Set today's date for udhaar form
+        const udDt = document.getElementById('udhaarDate');
+        if (udDt) udDt.value = new Date().toISOString().split('T')[0];
 
-        // Initial AI greeting after a moment
+        // Initial AI greeting
         setTimeout(() => {
             const insight = AIEngine.generateInsights()[0];
             this.addAIChatMessage('assistant', insight);
@@ -61,11 +86,52 @@ const Dashboard = {
                 sections.forEach(s => s.classList.remove('active'));
                 document.getElementById(target).classList.add('active');
 
-                // Refresh on section switch
                 if (target === 'overview') {
                     this.refreshAllData();
+                } else if (target === 'health') {
+                    HealthScore.refresh();
                 } else if (target === 'advisor') {
                     BusinessAdvisor.refresh();
+                } else if (target === 'decision') {
+                    DecisionEngine.renderHistory();
+                } else if (target === 'alerts') {
+                    AlertSystem.renderAlertsPage();
+                    const all = AlertSystem.getAlerts();
+                    const rEl = document.getElementById('alertCountRed'); if(rEl) rEl.textContent = all.filter(a=>a.type==='red').length;
+                    const yEl = document.getElementById('alertCountYellow'); if(yEl) yEl.textContent = all.filter(a=>a.type==='yellow').length;
+                    const gEl = document.getElementById('alertCountGreen'); if(gEl) gEl.textContent = all.filter(a=>a.type==='green').length;
+                } else if (target === 'invpredict') {
+                    InventoryPredictor.refresh();
+                } else if (target === 'aipricing') {
+                    SmartPricing.renderHistory();
+                } else if (target === 'smartreports') {
+                    SmartReports.renderPreviewFull();
+                } else if (target === 'udhaar') {
+                    Udhaar.render();
+                } else if (target === 'billing') {
+                    BillingSystem.renderForm(); BillingSystem.renderHistory();
+                } else if (target === 'cashflow') {
+                    CashFlow.render();
+                } else if (target === 'goals') {
+                    GoalSystem.render();
+                } else if (target === 'customerinsights') {
+                    CustomerInsights.refresh();
+                } else if (target === 'demand') {
+                    DemandForecast.refresh();
+                } else if (target === 'ecommerce') {
+                    MiniEcommerce.render();
+                } else if (target === 'offers') {
+                    OfferGenerator.render();
+                } else if (target === 'staff') {
+                    StaffManager.render();
+                } else if (target === 'suppliers') {
+                    SupplierManager.render();
+                } else if (target === 'peaksales') {
+                    PeakSales.render();
+                } else if (target === 'markettrends') {
+                    MarketTrends.render();
+                } else if (target === 'multishop') {
+                    MultiShop.render();
                 } else if (target === 'pricing') {
                     PricingModule.loadUploadedPricingData();
                 } else if (target === 'sales') {
@@ -229,6 +295,7 @@ const Dashboard = {
             this.updateOverviewAI();
         }
 
+        HealthScore.refresh();
         this.refreshInventoryUI();
         this.populateProductSelects();
         this.refreshSalesTable();
